@@ -2,8 +2,8 @@ package foreignusage
 
 import "github.com/Kawaii-Konnections-KK-Limited/subscription/api"
 
-func InitService() {
+func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool) {
 
-	api.InitRoutes(nil, nil).Run()
+	api.InitRoutes(gupFunc, vtFunc).Run()
 
 }
