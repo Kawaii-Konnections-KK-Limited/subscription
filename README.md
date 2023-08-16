@@ -39,3 +39,49 @@ go run cmd/main.go
 ```
 
 Will start the service on default port 8080.
+
+## Importing as external
+
+The `foreignusage/usage.go` file shows how another service can import and initialize the API from the subscription microservice package.
+
+It imports the `api` package:
+
+```go
+import "github.com/Kawaii-Konnections-KK-Limited/subscription/api"
+```
+
+It then calls `api.InitRoutes` while passing callback functions for token verification and profile lookup:
+
+```go
+func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool) {
+
+  api.InitRoutes(gupFunc, vtFunc).Run()
+
+}
+```
+
+This allows the importing service to provide custom implementations for these functions that the subscription API relies on.
+
+For example, the service could have its own way of looking up user profiles based on a token:
+
+```go
+gupFunc := func(token *string) *[]string {
+
+  // Lookup user profiles based on token
+  
+  return &userProfiles 
+}
+
+vtFunc := func(token *string) bool {
+
+  // Verify token is valid
+
+  return tokenIsValid
+}
+
+InitService(gupFunc, vtFunc)
+```
+
+This initializes the API with routes and middleware, but with the custom verification and profile functions provided.
+
+So in summary, the `api` package provides a simple way to initialize the subscription API routes while allowing importing services to customize the key dependent logic.
