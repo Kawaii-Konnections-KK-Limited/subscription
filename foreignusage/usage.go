@@ -1,20 +1,35 @@
 package foreignusage
 
 import (
+	"errors"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/Kawaii-Konnections-KK-Limited/subscription/api"
 )
 
-func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool, addr, certFile, keyFile *string) {
+func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool, certFile, keyFile *string) {
+	port := os.Getenv("PORT")
+	addr := os.Getenv("ADDRESS")
+	if port == "" {
+		fmt.Println(errors.New("please set PORT environment variable"))
+		port = "8080"
+		fmt.Println("Defaulting to port ", port)
 
-	if addr != nil && certFile != nil && keyFile != nil {
+	}
+	if addr == "" {
+		fmt.Println(errors.New("please set ADDRESS environment variable"))
+		port = "0.0.0.0"
+		fmt.Println("Defaulting to port ", port)
+	}
+	if addr != "" && certFile != nil && keyFile != nil {
 		log.Println("running with tls")
-		api.InitRoutes(gupFunc, vtFunc).RunTLS(*addr, *certFile, *keyFile)
+		api.InitRoutes(gupFunc, vtFunc).RunTLS(fmt.Sprintf("%s:%s", addr, port), *certFile, *keyFile)
 	} else {
 		log.Println("running without tls")
 
-		api.InitRoutes(gupFunc, vtFunc).Run()
+		api.InitRoutes(gupFunc, vtFunc).Run(fmt.Sprintf("%s:%s", addr, port))
 	}
 
 }
