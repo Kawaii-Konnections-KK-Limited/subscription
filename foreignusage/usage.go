@@ -20,8 +20,8 @@ func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *strin
 	}
 	if addr == "" {
 		fmt.Println(errors.New("please set ADDRESS environment variable"))
-		port = "0.0.0.0"
-		fmt.Println("Defaulting to port ", port)
+		addr = "0.0.0.0"
+		fmt.Println("Defaulting to addr ", addr)
 	}
 	if addr != "" && certFile != nil && keyFile != nil {
 		log.Println("running with tls")
