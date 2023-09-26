@@ -1,4 +1,4 @@
-# Subscription Microservice version 1.0.0.01
+# Subscription Microservice version 1.0.0.02
 
 This is a microservice written in Go using the Gin framework for handling subscriptions.
 
@@ -50,10 +50,10 @@ It imports the `api` package:
 import "github.com/Kawaii-Konnections-KK-Limited/subscription/api"
 ```
 
-It then calls `api.InitRoutes` while passing callback functions for token verification and profile lookup:
+It then calls `api.InitRoutes` while passing callback functions for token verification and profile lookup and subscription update sender:
 
 ```go
-func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool) {
+func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool ,SubUpdateSender func(token *string), certFile, keyFile *string) {
 
   api.InitRoutes(gupFunc, vtFunc).Run()
 
@@ -79,7 +79,18 @@ vtFunc := func(token *string) bool {
   return tokenIsValid
 }
 
-InitService(gupFunc, vtFunc)
+SubUpdateSender := func(token *string) {
+
+  // Send users token who updated their subscription
+
+}
+```
+
+Then the service can initialize the API with these functions:
+
+```go
+
+InitService(gupFunc, vtFunc ,SubUpdateSender, &certFile, &keyFile) 
 ```
 
 This initializes the API with routes and middleware, but with the custom verification and profile functions provided.
