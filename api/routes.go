@@ -7,12 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool) *gin.Engine {
+func InitRoutes(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool, SubUpdateSender func(token *string)) *gin.Engine {
 	if gupFunc != nil {
 		utils.GetUserProfiles = gupFunc
 	}
 	if vtFunc != nil {
 		utils.VerifyToken = vtFunc
+	}
+	if SubUpdateSender != nil {
+		utils.SubUpdateSender = SubUpdateSender
 	}
 	r := gin.Default()
 	r.Use(middleware.AuthTokenMiddleware())

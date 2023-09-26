@@ -9,7 +9,7 @@ import (
 	"github.com/Kawaii-Konnections-KK-Limited/subscription/api"
 )
 
-func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool, certFile, keyFile *string) {
+func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *string) bool, SubUpdateSender func(token *string), certFile, keyFile *string) {
 	port := os.Getenv("PORT")
 	addr := os.Getenv("ADDRESS")
 	if port == "" {
@@ -25,11 +25,11 @@ func InitService(gupFunc func(token *string) *[]string, vtFunc func(token *strin
 	}
 	if addr != "" && certFile != nil && keyFile != nil {
 		log.Println("running with tls")
-		api.InitRoutes(gupFunc, vtFunc).RunTLS(fmt.Sprintf("%s:%s", addr, port), *certFile, *keyFile)
+		api.InitRoutes(gupFunc, vtFunc, SubUpdateSender).RunTLS(fmt.Sprintf("%s:%s", addr, port), *certFile, *keyFile)
 	} else {
 		log.Println("running without tls")
 
-		api.InitRoutes(gupFunc, vtFunc).Run(fmt.Sprintf("%s:%s", addr, port))
+		api.InitRoutes(gupFunc, vtFunc, SubUpdateSender).Run(fmt.Sprintf("%s:%s", addr, port))
 	}
 
 }

@@ -1,6 +1,8 @@
 package utils
 
-import "encoding/base64"
+import (
+	"encoding/base64"
+)
 
 func SubscriptionBuilder(l *[]string) string {
 	var subs string
@@ -15,6 +17,7 @@ func SubscriptionBuilder(l *[]string) string {
 
 var GetUserProfiles = getUserProfiles
 var VerifyToken = verifyToken
+var SubUpdateSender = subscriptionUpdateSender
 
 func getUserProfiles(token *string) *[]string {
 
@@ -23,4 +26,7 @@ func getUserProfiles(token *string) *[]string {
 }
 func verifyToken(token *string) bool {
 	return true
+}
+func subscriptionUpdateSender(token *string) {
+
 }

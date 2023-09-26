@@ -6,6 +6,6 @@ import (
 
 func main() {
 
-	api.InitRoutes(nil, nil).Run()
+	api.InitRoutes(nil, nil, nil).Run()
 
 }

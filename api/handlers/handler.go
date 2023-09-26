@@ -11,6 +11,6 @@ func SubscriptionHandler(c *gin.Context) {
 	token, _ := c.Get("token")
 	subs := utils.GetUserProfiles(token.(*string))
 	c.Writer.Header().Set("Content-Type", plaintextContentType)
-
+	utils.SubUpdateSender(token.(*string))
 	c.String(200, utils.SubscriptionBuilder(subs))
 }
