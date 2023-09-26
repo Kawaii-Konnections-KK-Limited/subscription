@@ -1,4 +1,4 @@
-# Subscription Microservice
+# Subscription Microservice version 1.0.0.01
 
 This is a microservice written in Go using the Gin framework for handling subscriptions.
 
